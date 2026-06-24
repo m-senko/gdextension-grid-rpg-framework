@@ -1,5 +1,5 @@
 #include "health_component.hpp"
-#include "actor_stats.hpp"
+#include "stats_component.hpp"
 #include <algorithm>
 #include <godot_cpp/core/class_db.hpp>
 #include <godot_cpp/variant/utility_functions.hpp>
@@ -32,7 +32,7 @@ namespace godot
         ClassDB::add_property("HealthComponent", PropertyInfo(Variant::FLOAT, "regen_interval"), "set_regen_interval", "get_regen_interval");
 
         ClassDB::bind_method(D_METHOD("take_damage", "p_base_damage"), &HealthComponent::take_damage);
-        
+
         ADD_SIGNAL(MethodInfo("died"));
         ADD_SIGNAL(MethodInfo("health_changed", PropertyInfo(Variant::FLOAT, "next_health"), PropertyInfo(Variant::FLOAT, "prev_health")));
     }
@@ -141,7 +141,7 @@ namespace godot
     bool HealthComponent::take_damage(float p_damage) {
         if (current_health <= 0.0f) { return false; }
 
-        ActorStats* stats = get_node<ActorStats>("../ActorStats");
+        StatsComponent* stats = get_node<StatsComponent>("../ActorStats");
 
         if (stats != nullptr) {
             if (stats->check_evade()) {

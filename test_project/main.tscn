@@ -1,10 +1,13 @@
 [gd_scene format=3 uid="uid://hn8dh5y3yq6a"]
 
 [ext_resource type="Script" uid="uid://gscsivoywwwo" path="res://main.gd" id="1_ig7tw"]
-[ext_resource type="Script" uid="uid://dbw8ucl38rp8x" path="res://enemy.gd" id="2_0xm2m"]
 [ext_resource type="Script" uid="uid://csghdi5wx0txr" path="res://node.gd" id="2_h2yge"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_h2yge"]
+[sub_resource type="Curve" id="Curve_0xm2m"]
+
+[sub_resource type="CurveTexture" id="CurveTexture_h2yge"]
+width = 32
+curve = SubResource("Curve_0xm2m")
 
 [node name="Main" type="Node2D" unique_id=1149447431]
 script = ExtResource("1_ig7tw")
@@ -12,10 +15,17 @@ script = ExtResource("1_ig7tw")
 [node name="Node" type="Node" parent="." unique_id=1304973276]
 script = ExtResource("2_h2yge")
 
-[node name="Enemy" type="RigidBody2D" parent="." unique_id=671704303]
-script = ExtResource("2_0xm2m")
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1102475355]
+scale = Vector2(1, 32)
+texture = SubResource("CurveTexture_h2yge")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy" unique_id=1112187620]
-shape = SubResource("CircleShape2D_h2yge")
+[node name="HealthComponent" type="HealthComponent" parent="Sprite2D" unique_id=511616427]
+regen_amount = 0.0
+regen_interval = 0.0
 
-[node name="HealthComponent" type="HealthComponent" parent="Enemy" unique_id=511616427]
+[node name="GridMovementComponent" type="GridMovementComponent" parent="Sprite2D" unique_id=2056201585]
+position = Vector2(16, 16)
+
+[node name="LevelComponent" type="LevelComponent" parent="Sprite2D" unique_id=1687603774]
+
+[node name="ActorStats" type="ActorStats" parent="Sprite2D" unique_id=336109961]

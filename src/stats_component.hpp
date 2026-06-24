@@ -4,8 +4,8 @@
 
 namespace godot {
 
-class ActorStats : public Node {
-    GDCLASS(ActorStats, Node);
+class StatsComponent : public Node {
+    GDCLASS(StatsComponent, Node);
 
 private:
     int strength;     // Affects Damage
@@ -20,8 +20,8 @@ protected:
     static void _bind_methods();
 
 public:
-    ActorStats();
-    ~ActorStats();
+    StatsComponent();
+    ~StatsComponent();
 
     void set_strength(int p_value);
     int get_strength() const;

@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="StatsCalculator" inherits="RefCounted" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/godotengine/godot/master/doc/class.xsd">
+<class name="LevelComponent" inherits="Node" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/godotengine/godot/master/doc/class.xsd">
 	<brief_description>
 		A custom RPG-style experience and level progression calculator.
 	</brief_description>
 	<description>
 		This class handles character level-up mechanics using an exponential progression formula. 
-		It operates as a [RefCounted] object, meaning its memory is managed automatically by Godot's reference counting system. 
 		When experience points exceed the current level threshold, it automatically recalculates the level, consumes the required XP, and emits the [signal level_up] signal.
 	</description>
 	<tutorials>
@@ -45,7 +44,7 @@
 			<param index="0" name="p_progression" type="float" />
 			<description>
 				Initializes the multiplier for the exponential level progression formula. 
-				[b]Warning:[/b] It is recommended to call this method immediately after instantiating the object (e.g., via [code]StatsCalculator.new()[/code]) to override the default multiplier value of [code]1.1[/code].
+				[b]Warning:[/b] It is recommended to call this method immediately after instantiating the object (e.g., via [code]LevelComponent.new()[/code]) to override the default multiplier value of [code]1.1[/code].
 			</description>
 		</method>
 	</methods>

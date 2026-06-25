@@ -5,7 +5,7 @@
 	</brief_description>
 	<description>
 		The [HealthComponent] is a modular [Node] written in C++ (GDExtension) designed to handle health tracking, healing, dynamic damage mitigation, and passive regeneration. 
-		It seamlessly integrates with [ActorStats] to automatically handle evasion and armor reduction. 
+		It seamlessly integrates with [HealthComponent] to automatically handle evasion and armor reduction. 
 		All changes to health trigger detailed event notifications, making it perfectly suited for turn-based and real-time RPG systems.
 	</description>
 	<tutorials>

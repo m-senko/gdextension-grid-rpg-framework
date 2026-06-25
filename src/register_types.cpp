@@ -1,5 +1,6 @@
 // Include your classes, that you want to expose to Godot
 
+#include "game_grid_map.hpp"
 #include "stats_component.hpp"
 #include "grid_movement_component.hpp"
 #include "health_component.hpp"
@@ -20,8 +21,9 @@ void initialize_gdextension_types(ModuleInitializationLevel p_level)
 
 	ClassDB::register_class<HealthComponent>();
     ClassDB::register_class<LevelComponent>();
-	ClassDB::register_class<GridMovementComponent>();
 	ClassDB::register_class<StatsComponent>();
+	ClassDB::register_class<GridMovementComponent>();
+	ClassDB::register_class<GameGridMap>();
 }
 
 void uninitialize_gdextension_types(ModuleInitializationLevel p_level) {

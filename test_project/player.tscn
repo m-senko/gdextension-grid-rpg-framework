@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://ns83tkhuhje1"]
+
+[ext_resource type="Script" uid="uid://bwq4svwv3iger" path="res://player.gd" id="1_onrkg"]
+[ext_resource type="Texture2D" uid="uid://bioamopp6syek" path="res://icon.svg" id="2_i3pqv"]
+
+[node name="Player" type="Node2D" unique_id=2119305056]
+script = ExtResource("1_onrkg")
+metadata/_edit_group_ = true
+
+[node name="HealthComponent" type="HealthComponent" parent="." unique_id=1329284924]
+max_health = 120.0
+regen_amount = 0.0
+regen_interval = 0.0
+
+[node name="LevelComponent" type="LevelComponent" parent="." unique_id=1384331015]
+
+[node name="StatsComponent" type="StatsComponent" parent="." unique_id=1616228810]
+
+[node name="GridMovementComponent" type="GridMovementComponent" parent="." unique_id=1531134871]
+position = Vector2(16, 16)
+scale = Vector2(1, 32)
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=212296202]
+position = Vector2(16, 16)
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("2_i3pqv")

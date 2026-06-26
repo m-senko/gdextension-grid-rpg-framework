@@ -1,6 +1,6 @@
 #pragma once
 
-#include "game_grid_map.hpp"
+#include "grid_map_singleton.hpp"
 #include <godot_cpp/classes/node2d.hpp>
 #include <godot_cpp/variant/vector2i.hpp>
 
@@ -13,7 +13,7 @@ private:
     Vector2i grid_position;
     int cell_size;
 
-    GameGridMap* map_node; 
+    GridMapSingleton* map_singltone; 
 
 protected:
     static void _bind_methods();

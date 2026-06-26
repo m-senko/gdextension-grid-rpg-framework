@@ -1,5 +1,5 @@
 #include "grid_movement_component.hpp"
-#include "game_grid_map.hpp"
+#include "grid_map_singleton.hpp"
 #include <godot_cpp/core/class_db.hpp>
 #include <godot_cpp/variant/utility_functions.hpp>
 
@@ -23,12 +23,12 @@ void GridMovementComponent::_bind_methods() {
 GridMovementComponent::GridMovementComponent() 
 :   grid_position(0, 0),
     cell_size(32),
-    map_node(nullptr)
+    map_singltone(nullptr)
 {}
 
 GridMovementComponent::~GridMovementComponent() {
-    if (map_node != nullptr) {
-        map_node->clear_occupant(grid_position);
+    if (map_singltone != nullptr) {
+        map_singltone->clear_occupant(grid_position);
     }
 }
 
@@ -43,20 +43,25 @@ void GridMovementComponent::_ready() {
     UtilityFunctions::print("Entity initialized at C++ Grid Position: ", grid_position);
     set_grid_position(grid_position);
     
-    map_node->set_occupant(grid_position, get_owner()); 
+    map_singltone->set_occupant(grid_position, get_owner()); 
 }
 
 bool GridMovementComponent::map_init()
 {
-    map_node = GameGridMap::get_singleton();
-    if (map_node == nullptr) {
-        ERR_PRINT("GameGridMap singleton is missing! Grid movement will not function.");
+    map_singltone = GridMapSingleton::get_singleton();
+    if (map_singltone == nullptr) {
+        ERR_PRINT("GridMapSingleton singleton is missing! Grid movement will not function.");
         return false;
     }
     return true;
 }
 
 void GridMovementComponent::set_grid_position(Vector2i p_pos) {
+    if(map_singltone != nullptr){
+        map_singltone->clear_occupant(grid_position);
+        map_singltone->set_occupant(p_pos, get_owner());
+    }
+    emit_signal("moved", p_pos, grid_position);
     grid_position = p_pos;
 }
 
@@ -71,17 +76,10 @@ bool GridMovementComponent::try_move(Vector2i p_direction) {
 
     Vector2i target_cell = grid_position + p_direction;
 
-    GameGridMap* map = GameGridMap::get_singleton();
     
-    if (map != nullptr && map->is_tile_walkable(target_cell)) {
-        map->clear_occupant(grid_position);
-        map->set_occupant(target_cell, get_owner());
-
-        emit_signal("moved", target_cell, grid_position);
-
-        grid_position = target_cell;
-        map->on_cell_entered(get_owner(), grid_position);
-
+    if (map_singltone != nullptr && map_singltone->is_tile_walkable(target_cell)) {
+        set_grid_position(target_cell);
+        map_singltone->on_cell_entered(get_owner(), target_cell);
         return true; 
     }
 

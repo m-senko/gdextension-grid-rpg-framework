@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://bfmufujdc2fvy"]
+
+[ext_resource type="Texture2D" uid="uid://bioamopp6syek" path="res://icon.svg" id="1_6n8dw"]
+
+[node name="Enemy" type="Node2D" unique_id=521810314]
+metadata/_edit_group_ = true
+
+[node name="GridMovementComponent" type="GridMovementComponent" parent="." unique_id=1181999500]
+
+[node name="StatsComponent" type="StatsComponent" parent="." unique_id=1622653673]
+
+[node name="HealthComponent" type="HealthComponent" parent="." unique_id=148587450]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1093403007]
+modulate = Color(1, 0.29411766, 0.29411766, 1)
+position = Vector2(16, 16)
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("1_6n8dw")

@@ -1,32 +1,32 @@
-#include "game_grid_map.hpp"
+#include "grid_map_singleton.hpp"
 #include <godot_cpp/core/class_db.hpp>
 #include <godot_cpp/variant/utility_functions.hpp>
 #include <godot_cpp/classes/tile_data.hpp>
 
 namespace godot {
 
-void GameGridMap::_bind_methods() {
-    ClassDB::bind_method(D_METHOD("is_tile_walkable", "p_cell"), &GameGridMap::is_tile_walkable);
-    ClassDB::bind_method(D_METHOD("on_cell_entered", "p_entity", "p_cell"), &GameGridMap::on_cell_entered);
+void GridMapSingleton::_bind_methods() {
+    ClassDB::bind_method(D_METHOD("is_tile_walkable", "p_cell"), &GridMapSingleton::is_tile_walkable);
+    ClassDB::bind_method(D_METHOD("on_cell_entered", "p_entity", "p_cell"), &GridMapSingleton::on_cell_entered);
     
-    ClassDB::bind_method(D_METHOD("set_occupant", "p_cell", "p_node"), &GameGridMap::set_occupant);
-    ClassDB::bind_method(D_METHOD("clear_occupant", "p_cell"), &GameGridMap::clear_occupant);
+    ClassDB::bind_method(D_METHOD("set_occupant", "p_cell", "p_node"), &GridMapSingleton::set_occupant);
+    ClassDB::bind_method(D_METHOD("clear_occupant", "p_cell"), &GridMapSingleton::clear_occupant);
 }
 
-GameGridMap* GameGridMap::singleton = nullptr;
+GridMapSingleton* GridMapSingleton::singleton = nullptr;
 
-GameGridMap* GameGridMap::get_singleton() {
+GridMapSingleton* GridMapSingleton::get_singleton() {
     return singleton;
 }
 
-GameGridMap::GameGridMap() : visual_layer(nullptr), map_size(0, 0) {}
-GameGridMap::~GameGridMap() {
+GridMapSingleton::GridMapSingleton() : visual_layer(nullptr), map_size(0, 0) {}
+GridMapSingleton::~GridMapSingleton() {
     if (singleton == this) {
         singleton = nullptr;
     }
 }
 
-void GameGridMap::_ready() {
+void GridMapSingleton::_ready() {
     if (singleton == nullptr) {
         singleton = this;
     }
@@ -36,11 +36,11 @@ void GameGridMap::_ready() {
     if (visual_layer != nullptr) {
         initialize_map();
     } else {
-        UtilityFunctions::print("Warning: GameGridMap could not find TileMapLayer node!");
+        UtilityFunctions::print("Warning: GridMapSingleton could not find TileMapLayer node!");
     }
 }
 
-void GameGridMap::initialize_map() {
+void GridMapSingleton::initialize_map() {
     Rect2i used_rect = visual_layer->get_used_rect();
     map_size.x = used_rect.size.x;
     map_size.y = used_rect.size.y;
@@ -62,10 +62,10 @@ void GameGridMap::initialize_map() {
             }
         }
     }
-    UtilityFunctions::print("GameGridMap initialized. Size: ", map_size, " | Offset: ", map_offset);
+    UtilityFunctions::print("GridMapSingleton initialized. Size: ", map_size, " | Offset: ", map_offset);
 }
 
-bool GameGridMap::is_tile_walkable(Vector2i p_cell) const {
+bool GridMapSingleton::is_tile_walkable(Vector2i p_cell) const {
     Vector2i local_cell = p_cell - map_offset;
 
     if (local_cell.x < 0 || local_cell.x >= map_size.x || local_cell.y < 0 || local_cell.y >= map_size.y) {
@@ -80,24 +80,28 @@ bool GameGridMap::is_tile_walkable(Vector2i p_cell) const {
 }
 
 
-bool GameGridMap::set_occupant(Vector2i p_cell, Node* p_node) {
-    if (p_cell.x < 0 || p_cell.x >= map_size.x || p_cell.y < 0 || p_cell.y >= map_size.y) { return false; }
+bool GridMapSingleton::set_occupant(Vector2i p_cell, Node* p_node) {
+    p_cell -= map_offset;
+    if (p_cell.x < 0 || p_cell.x >= map_size.x || p_cell.y < 0 || p_cell.y >= map_size.y || p_node == nullptr) { return false; }
     
     matrix[p_cell.x][p_cell.y].occupant = p_node;
     return true;
 }
 
-void GameGridMap::clear_occupant(Vector2i p_cell) {
+void GridMapSingleton::clear_occupant(Vector2i p_cell) {
+    p_cell -= map_offset;
     if (p_cell.x < 0 || p_cell.x >= map_size.x || p_cell.y < 0 || p_cell.y >= map_size.y) { return; }
     matrix[p_cell.x][p_cell.y].occupant = nullptr;
 }
 
-Node* GameGridMap::get_occupant(Vector2i p_cell) const {
+Node* GridMapSingleton::get_occupant(Vector2i p_cell) const {
+    p_cell -= map_offset;
     if (p_cell.x < 0 || p_cell.x >= map_size.x || p_cell.y < 0 || p_cell.y >= map_size.y) { return nullptr; }
     return matrix[p_cell.x][p_cell.y].occupant;
 }
 
-void GameGridMap::on_cell_entered(Node* p_entity, Vector2i p_cell) {
+void GridMapSingleton::on_cell_entered(Node* p_entity, Vector2i p_cell) {
+    p_cell -= map_offset;
     if (p_cell.x < 0 || p_cell.x >= map_size.x || p_cell.y < 0 || p_cell.y >= map_size.y) { return; }
 
     CellState& cell = matrix[p_cell.x][p_cell.y];

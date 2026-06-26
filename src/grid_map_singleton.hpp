@@ -15,8 +15,8 @@ struct CellState {
     Node* dropped_item = nullptr;
 };
 
-class GameGridMap : public Node {
-    GDCLASS(GameGridMap, Node);
+class GridMapSingleton : public Node {
+    GDCLASS(GridMapSingleton, Node);
 
 private:
     std::vector<std::vector<CellState>> matrix;
@@ -24,18 +24,18 @@ private:
     Vector2i map_offset;
     TileMapLayer* visual_layer;
 
-    static GameGridMap* singleton;
+    static GridMapSingleton* singleton;
 
 protected:
     static void _bind_methods();
 
 public:
-    GameGridMap();
-    ~GameGridMap();
+    GridMapSingleton();
+    ~GridMapSingleton();
 
     void _ready() override;
 
-    static GameGridMap* get_singleton();
+    static GridMapSingleton* get_singleton();
 
     void initialize_map();
 

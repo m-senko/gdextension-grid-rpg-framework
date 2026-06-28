@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="GridMapSingleton" inherits="Node" xmlns:xsi="http://w3.org" xsi:noNamespaceSchemaLocation="../../../doc/class.xsd">
+	<brief_description>
+		A singleton managing the logical state of a gameplay grid synchronized with a TileMapLayer.
+	</brief_description>
+	<description>
+		The class automatically initializes a 2D matrix of grid cells by synchronizing with a neighboring [TileMapLayer] node (located at the hardcoded path [code]"../TileMapLayer"[/code]).
+		It reads custom tile data ([code]"walkable"[/code]), tracks objects occupying the grid (Occupants), and handles ground hazards/zones (Effects), seamlessly translating global grid coordinates into internal matrix indices.
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="clear_occupant">
+			<return type="void" />
+			<param index="0" name="p_cell" type="Vector2i" />
+			<description>
+				Clears the occupant data at the specified global grid cell [param p_cell], making the cell vacant.
+			</description>
+		</method>
+		<method name="get_effect">
+			<return type="Node" />
+			<param index="0" name="p_cell" type="Vector2i" />
+			<description>
+				Returns the ground effect node located at the global grid cell [param p_cell]. Returns [code]null[/code] if there is no effect or if the coordinates are out of bounds.
+			</description>
+		</method>
+		<method name="get_occupant">
+			<return type="Node" />
+			<param index="0" name="p_cell" type="Vector2i" />
+			<description>
+				Returns the node (e.g., a character or obstacle) occupying the global grid cell [param p_cell]. Returns [code]null[/code] if the cell is empty. Automatically cleans up stale references if the occupying object was previously destroyed.
+			</description>
+		</method>
+		<method name="is_tile_walkable">
+			<return type="bool" />
+			<param index="0" name="p_cell" type="Vector2i" />
+			<description>
+				Checks whether the global grid cell [param p_cell] can be traversed. A cell is considered walkable if it is within map boundaries, its tile is not flagged as a wall (has [code]walkable == true[/code]), and it is not currently occupied by another node ([method get_occupant]).
+			</description>
+		</method>
+		<method name="on_cell_entered">
+			<return type="void" />
+			<param index="0" name="p_cell" type="Vector2i" />
+			<param index="1" name="p_node" type="Node" />
+			<description>
+				Triggered when an entity [param p_node] enters the global grid cell [param p_cell]. If a ground effect is present at these coordinates, this method automatically attempts to call its [code]apply_effect(p_node)[/code] function via duck-typing.
+			</description>
+		</method>
+		<method name="set_occupant">
+			<return type="bool" />
+			<param index="0" name="p_cell" type="Vector2i" />
+			<param index="1" name="p_node" type="Node" />
+			<description>
+				Attempts to assign the node [param p_node] as the occupant of the global grid cell [param p_cell]. 
+				Returns [code]true[/code] if successful. Returns [code]false[/code] if the cell is already occupied by a different node or if the coordinates are out of bounds.
+			</description>
+		</method>
+	</methods>
+</class>

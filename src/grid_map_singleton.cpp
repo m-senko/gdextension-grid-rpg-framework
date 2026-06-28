@@ -9,7 +9,7 @@ namespace godot {
 // Godot Binding
 // =============================================================================
 
-void GridMapSingleton::_bind_methods() {
+void ::_bind_methods() {
     ClassDB::bind_method(D_METHOD("is_tile_walkable", "p_cell"), &GridMapSingleton::is_tile_walkable);
     ClassDB::bind_method(D_METHOD("on_cell_entered", "p_cell", "p_node"), &GridMapSingleton::on_cell_entered);
     

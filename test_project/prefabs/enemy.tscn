@@ -1,16 +1,49 @@
-[gd_scene format=3 uid="uid://bfmufujdc2fvy"]
+[gd_scene format=3 uid="uid://b8r6j4a0tqle"]
 
-[ext_resource type="Texture2D" uid="uid://bioamopp6syek" path="res://icon.svg" id="1_6n8dw"]
+[ext_resource type="Texture2D" uid="uid://bioamopp6syek" path="res://icon.svg" id="1_48uxq"]
+[ext_resource type="Script" uid="uid://c6cdkb2bi01am" path="res://scripts/health_bar_enemy.gd" id="2_yfjof"]
 
-[node name="Enemy" type="Node2D" unique_id=521810314]
-metadata/_edit_group_ = true
+[sub_resource type="StatsBalanceConfig" id="StatsBalanceConfig_yfjof"]
 
-[node name="GridMovementComponent" type="GridMovementComponent" parent="." unique_id=1181999500]
+[sub_resource type="LabelSettings" id="LabelSettings_yfjof"]
+font_size = 5
 
-[node name="HealthComponent" type="HealthComponent" parent="." unique_id=148587450]
+[node name="Enemy" type="Actor" unique_id=1496490587]
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1093403007]
+[node name="GridMovementComponent" type="GridMovementComponent" parent="." unique_id=2073906707]
+
+[node name="HealthComponent" type="HealthComponent" parent="." unique_id=322187553]
+
+[node name="StatsComponent" type="StatsComponent" parent="." unique_id=584282133]
+endurance = 100
+balance_config = SubResource("StatsBalanceConfig_yfjof")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=955813386]
 modulate = Color(1, 0.29411766, 0.29411766, 1)
 position = Vector2(16, 16)
 scale = Vector2(0.25, 0.25)
-texture = ExtResource("1_6n8dw")
+texture = ExtResource("1_48uxq")
+
+[node name="HealthBar" type="ProgressBar" parent="." unique_id=1715814203]
+self_modulate = Color(1, 0, 0, 1)
+custom_minimum_size = Vector2(32, 8)
+offset_top = 32.0
+offset_right = 32.0
+offset_bottom = 40.0
+size_flags_horizontal = 8
+size_flags_vertical = 8
+value = 50.0
+show_percentage = false
+script = ExtResource("2_yfjof")
+
+[node name="Label" type="Label" parent="HealthBar" unique_id=730217586]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "100/100"
+label_settings = SubResource("LabelSettings_yfjof")
+horizontal_alignment = 1
+vertical_alignment = 1

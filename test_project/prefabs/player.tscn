@@ -18,6 +18,8 @@ max_health = 200.0
 [node name="StatsComponent" type="StatsComponent" parent="." unique_id=168382556]
 balance_config = SubResource("StatsBalanceConfig_4dohe")
 
+[node name="CombatComponent" type="CombatComponent" parent="." unique_id=963788604]
+
 [node name="GridMovementComponent" type="GridMovementComponent" parent="." unique_id=1539596255]
 scale = Vector2(1, 32)
 

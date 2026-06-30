@@ -6,6 +6,7 @@ const CELL_SIZE: int = 32
 # Ссылка на C++ компонент перемещения
 @onready var movement_component: GridMovementComponent = $GridMovementComponent
 @onready var health_component: HealthComponent = $HealthComponent
+@onready var combat_component: CombatComponent = $CombatComponent
 
 func _ready() -> void:
 	if not movement_component:
@@ -31,6 +32,9 @@ func _unhandled_input(event: InputEvent) -> void:
 	elif event.is_action_pressed("move_left"): direction = Vector2i(-1, 0)
 	elif event.is_action_pressed("move_down"): direction = Vector2i(0, 1)
 	elif event.is_action_pressed("move_up"): direction = Vector2i(0, -1)
+	
+	if event.is_action_pressed("attack"):
+		combat_component.attack(movement_component.grid_position + Vector2i(1,0))
 	
 	if direction != Vector2i.ZERO:
 		movement_component.try_move(direction)

@@ -1,6 +1,7 @@
 // Include your classes, that you want to expose to Godot
 
 #include "actor.hpp"
+#include "combat_component.hpp"
 #include "grid_map_singleton.hpp"
 #include "stats_balance_config.hpp"
 #include "stats_component.hpp"
@@ -28,6 +29,7 @@ void initialize_gdextension_types(ModuleInitializationLevel p_level)
 	ClassDB::register_class<GridMapSingleton>();
 	ClassDB::register_class<StatsBalanceConfig>();
 	ClassDB::register_class<Actor>();
+	ClassDB::register_class<CombatComponent>();
 }
 
 void uninitialize_gdextension_types(ModuleInitializationLevel p_level) {

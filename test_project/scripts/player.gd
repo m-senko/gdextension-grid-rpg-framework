@@ -2,7 +2,6 @@ extends Node2D
 
 # Константа размера клетки (должна строго совпадать с cell_size из C++)
 const CELL_SIZE: int = 32
-var timer: float = 0
 
 # Ссылка на C++ компонент перемещения
 @onready var movement_component: GridMovementComponent = $GridMovementComponent
@@ -23,10 +22,7 @@ func _ready() -> void:
 	)
 	
 func _process(delta: float):
-	timer += delta
-	if timer >= 1:
-		print(health_component.take_damage(10))
-		timer = timer - 1
+	pass
 
 func _unhandled_input(event: InputEvent) -> void:
 	var direction := Vector2i.ZERO
@@ -37,10 +33,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	elif event.is_action_pressed("move_up"): direction = Vector2i(0, -1)
 	
 	if direction != Vector2i.ZERO:
-		var can_move: bool = movement_component.try_move(direction)
-		
-		if not can_move:
-			print("Way is blocked!")
+		movement_component.try_move(direction)
 
 func _on_grid_move(next_pos: Vector2i, prev_pos: Vector2i) -> void:
 	var target_pixel_pos := Vector2(

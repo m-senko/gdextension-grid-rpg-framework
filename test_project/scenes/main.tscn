@@ -1,7 +1,7 @@
 [gd_scene format=4 uid="uid://hn8dh5y3yq6a"]
 
 [ext_resource type="Texture2D" uid="uid://i70g2kq6ligo" path="res://art/tilemaps/Dungeon_Tileset.png" id="1_0xm2m"]
-[ext_resource type="PackedScene" uid="uid://ns83tkhuhje1" path="res://prefabs/player.tscn" id="2_0xm2m"]
+[ext_resource type="PackedScene" uid="uid://dumacnlmlt17r" path="res://prefabs/player.tscn" id="2_0xm2m"]
 [ext_resource type="PackedScene" uid="uid://bfmufujdc2fvy" path="res://prefabs/enemy.tscn" id="3_h2yge"]
 [ext_resource type="PackedScene" uid="uid://cphrh7eu517gl" path="res://prefabs/player_hud.tscn" id="4_1bvp3"]
 
@@ -162,11 +162,10 @@ tile_map_data = PackedByteArray("AAAAAAAAAAAHAAEAAAAAAAEAAAAGAAAAAAAAAAIAAAADAAU
 tile_set = SubResource("TileSet_ig7tw")
 collision_enabled = false
 
-[node name="Player" parent="." unique_id=2119305056 instance=ExtResource("2_0xm2m")]
-position = Vector2(288, 160)
-
 [node name="Enemy" parent="." unique_id=521810314 instance=ExtResource("3_h2yge")]
 position = Vector2(160, 160)
 
 [node name="PlayerHud" parent="." unique_id=610704048 node_paths=PackedStringArray("player") instance=ExtResource("4_1bvp3")]
 player = NodePath("../Player")
+
+[node name="Player" parent="." unique_id=95756386 instance=ExtResource("2_0xm2m")]

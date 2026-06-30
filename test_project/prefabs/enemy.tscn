@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bfmufujdc2fvy"]
 
-[ext_resource type="Texture2D" uid="uid://bioamopp6syek" path="res://art/icon.svg" id="1_6n8dw"]
+[ext_resource type="Texture2D" uid="uid://bioamopp6syek" path="res://icon.svg" id="1_6n8dw"]
 
 [node name="Enemy" type="Node2D" unique_id=521810314]
 metadata/_edit_group_ = true

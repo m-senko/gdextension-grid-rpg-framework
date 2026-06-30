@@ -18,7 +18,6 @@ func _setup_health(player: Node2D):
 		_on_health_changed(health_comp.current_health, health_comp.current_health, health_comp.max_health)
 
 func _on_health_changed(next: float, prev: float, max_hp: float):
-	print(next, "    ", max_hp)
 	max_value = max_hp
 	value = next
 	label.text = "%d / %d" %[next, max_hp]

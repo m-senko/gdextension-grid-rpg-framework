@@ -47,6 +47,6 @@ namespace godot
         // float regen_interval;
         // double regen_timer;
 
-        StatsComponent* stats_component; 
+        StatsComponent* stats_component = nullptr; 
     };
 } // namespace godot

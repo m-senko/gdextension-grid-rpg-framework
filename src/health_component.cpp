@@ -43,9 +43,9 @@ namespace godot
 
             if (stats_component != nullptr) {
                 stats_component->connect("stats_changed", Callable(this, "_on_stats_changed"));
-                update_max_health();
-                current_health = max_health;
             }
+            update_max_health();
+            current_health = max_health;
         }
     }
 
@@ -70,7 +70,7 @@ namespace godot
     void HealthComponent::set_health(float p_health)
     {
         float clamped_health = std::clamp(p_health, 0.f, max_health);
-        if(p_health == clamped_health) { return; }
+        if(current_health == clamped_health) { return; }
         
         float prev_health = current_health;
         current_health = clamped_health;

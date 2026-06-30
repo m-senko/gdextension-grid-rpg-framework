@@ -2,9 +2,11 @@ extends Node2D
 
 # Константа размера клетки (должна строго совпадать с cell_size из C++)
 const CELL_SIZE: int = 32
+var timer: float = 0
 
 # Ссылка на C++ компонент перемещения
-@onready var movement_component: Node = $GridMovementComponent
+@onready var movement_component: GridMovementComponent = $GridMovementComponent
+@onready var health_component: HealthComponent = $HealthComponent
 
 func _ready() -> void:
 	if not movement_component:
@@ -19,6 +21,12 @@ func _ready() -> void:
 		(start_grid_pos.x * CELL_SIZE),
 		(start_grid_pos.y * CELL_SIZE)
 	)
+	
+func _process(delta: float):
+	timer += delta
+	if timer >= 1:
+		print(health_component.take_damage(10))
+		timer = timer - 1
 
 func _unhandled_input(event: InputEvent) -> void:
 	var direction := Vector2i.ZERO

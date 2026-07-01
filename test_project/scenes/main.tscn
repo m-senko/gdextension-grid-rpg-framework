@@ -152,6 +152,8 @@ sources/0 = SubResource("TileSetAtlasSource_h2yge")
 [node name="Main" type="Node2D" unique_id=1149447431]
 script = SubResource("GDScript_0xm2m")
 
+[node name="GameManagerSingleton" type="GameManagerSingleton" parent="." unique_id=410718375]
+
 [node name="World" type="Node2D" parent="." unique_id=204650000]
 
 [node name="GridMapSingleton" type="GridMapSingleton" parent="World" unique_id=1621966256]

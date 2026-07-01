@@ -1,5 +1,6 @@
 #include "game_manager_singleton.hpp"
 #include "actor.hpp"
+#include "ai_component.hpp"
 #include <godot_cpp/core/class_db.hpp>
 #include <godot_cpp/variant/utility_functions.hpp>
 
@@ -75,21 +76,10 @@ void GameManagerSingleton::trigger_enemy_turns() {
         Actor* enemy_actor = Object::cast_to<Actor>(obj);
         if (enemy_actor == nullptr) continue;
 
-        // ==========================================================================
-        // FUTURE PLUG FOR ENEMY AI
-        // ==========================================================================================
-        // TODO: When an AI component (e.g., EnemyAIComponent) appears:
-        // 1. Get it through the cache: my_ai = enemy_actor->get_component<EnemyAIComponent>();
-        // 2. Call the decision-making method: if (my_ai) { my_ai->execute_turn(); }
-        //
-        // For now, we'll just output a debug print to the console to see that the manager is running.
-        UtilityFunctions::print("GameManagerSingleton: Enemy AI tick triggered for Actor ID: ", id);
-        // =====================================================================
-
-        // TODO (AI Integration Phase):
-        // 1. Create a dedicated EnemyAIComponent inherited from BaseComponent.
-        // 2. Replace this print statement with a cache lookup for EnemyAIComponent.
-        // 3. Delegate movement/attack logic entirely to the AI component's decision-making methods.
+        AIComponent* ai = enemy_actor->get_component<AIComponent>();
+        if (ai != nullptr) {
+            ai->execute_turn();
+        }
     }
 
     for (uint64_t dead_id : dead_ids) {

@@ -33,7 +33,6 @@ private:
 
     static GridMapSingleton* singleton;
 
-    Vector2i global_to_grid(Vector2i p_global_cell) const;
     bool is_index_valid(Vector2i p_local_cell) const;
 
 // =============================================================================
@@ -56,7 +55,12 @@ public:
 
 // =============================================================================
 // Grid Logic - Global Coordinates (API Overtures for GDScript / External Nodes)
-// =============================================================================    
+// =============================================================================  
+    Vector2i global_to_grid(Vector2i p_global_cell) const;
+
+    Vector2i get_map_size() const { return map_size; }
+    Vector2i get_map_offset() const { return map_offset; }
+
     void set_cell_size(float p_size);
     float get_cell_size() const;
 

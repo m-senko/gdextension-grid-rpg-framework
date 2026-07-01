@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://b8r6j4a0tqle"]
 
 [ext_resource type="Texture2D" uid="uid://bioamopp6syek" path="res://icon.svg" id="1_48uxq"]
+[ext_resource type="Script" uid="uid://d3i5gdlv17fm5" path="res://scripts/enemy.gd" id="1_cypye"]
 [ext_resource type="Script" uid="uid://c6cdkb2bi01am" path="res://scripts/health_bar_enemy.gd" id="2_yfjof"]
 
 [sub_resource type="StatsBalanceConfig" id="StatsBalanceConfig_yfjof"]
@@ -9,6 +10,7 @@
 font_size = 7
 
 [node name="Enemy" type="Actor" unique_id=1496490587]
+script = ExtResource("1_cypye")
 
 [node name="GridMovementComponent" type="GridMovementComponent" parent="." unique_id=2073906707]
 
@@ -21,6 +23,10 @@ agility = 100
 vitality = 100
 endurance = 100
 balance_config = SubResource("StatsBalanceConfig_yfjof")
+
+[node name="CombatComponent" type="CombatComponent" parent="." unique_id=1175083531]
+
+[node name="AIComponent" type="AIComponent" parent="." unique_id=1596333844]
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=955813386]
 modulate = Color(1, 0.29411766, 0.29411766, 1)

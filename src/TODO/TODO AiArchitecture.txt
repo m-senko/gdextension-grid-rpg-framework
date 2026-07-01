@@ -1,0 +1,35 @@
+// =============================================================================
+// TODO (AI Architecture Phase 1 - Core MVP Base):
+// =============================================================================
+// 1. Create AIComponent as the main orchestrator that registers with GameManager.
+// 2. Implement a State/Behavior Module (FSM) exportable to GDScript to manage states (Idle, Wander, Chase, Flee) using context/weight-based modifiers.
+// 3. Implement a Navigation Module using Godot's AStarGrid2D:
+//    - It should expose get_next_step_towards(p_target_cell) -> Vector2i.
+//    - It must query GridMapSingleton to dynamically adjust tile travel costs (e.g., standard floor = 1.0, ground traps/fire = 5.0).
+// 4. Implement a Perception Module to handle vision/hearing ranges and detect the target's presence on the grid.
+// 5. Implement a Combat/Action Module to manage a list of available NPC abilities (e.g., Melee, Ranged, Spells, Dashes).
+// 6. Apply Utility AI principles: each ability must dynamically calculate its own "weight/desire" based on current context (distance, mana, cooldowns).
+// 7. If the main State Module enters the 'Fight' state, delegate execution to the Combat Module to pick the action with the highest calculated weight.
+// 8. If all combat abilities return 0.0 weight, fall back to the Navigation Module to perform a standard pathfinding step toward the target.
+
+// =============================================================================
+// NOTE (Developer Experience & Workflow):
+// =============================================================================
+// - [AI Debugger API]: Add a get_ai_debug_info() -> Dictionary method to expose current state weights in real-time. 
+//   This allows creating a debugging UI panel in GDScript to see exactly why an NPC chose an action.
+// - [Ability Configuration (A/B testing)]: Support defining combat abilities either via separate .tres files (Resource) 
+//   or directly as inline properties in the inspector to allow rapid prototyping for designers.
+
+// =============================================================================
+// FUTURE EXPANSION (Post-MVP Backlog - Implement Later):
+// =============================================================================
+// - [Two-Phase Intent Prediction]: Refactor GameManager and AI into an Intent phase (NPCs compute actions, emit "intent_changed" 
+//   for UI icons) and an Execution phase (NPCs move simultaneously).
+// - [Intent Exploitation Protection]: Standard melee/ranged attacks predict general intent but re-target the player's CURRENT cell 
+//   on tick execution to prevent path-loop exploits. Hard-coded cell targets apply ONLY to heavy/telegraphed AOE abilities.
+// - [Intent Interruption]: Implement a Stagger/Interrupt mechanic. If an NPC takes a threshold of damage or crowd control (stun/push) 
+//   during a heavy/telegraphed action phase, clear its 'current_intent' and force it to waste its turn.
+// - [AI Memory Module]: If the Perception Module loses sight of the player, enter a 'Search' sub-state. 
+//   NPCs should track the Last Known Position on the grid for 3-5 turns before falling back to peaceful 'Wander'.
+// - [AOE and Range Visualization]: Combat abilities should expose get_target_area(p_origin) -> TypedArray<Vector2i> in C++. 
+//   GDScript can query this on mouse-hover to draw visual danger overlays on the TileMapLayer without performance drops.

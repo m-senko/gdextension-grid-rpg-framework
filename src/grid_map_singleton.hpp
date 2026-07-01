@@ -40,6 +40,7 @@ private:
 // =============================================================================
 protected:
     static void _bind_methods();
+    void _notification(int p_what); 
 
 // =============================================================================
 // Lifecycle & Initialization
@@ -47,8 +48,6 @@ protected:
 public:
     GridMapSingleton();
     ~GridMapSingleton();
-
-    void _ready() override;
 
     static GridMapSingleton* get_singleton();
 

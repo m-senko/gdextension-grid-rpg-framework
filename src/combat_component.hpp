@@ -1,6 +1,6 @@
 #pragma  once
 
-#include <godot_cpp/classes/node.hpp>
+#include "base_component.hpp"
 #include <godot_cpp/variant/vector2i.hpp>
 
 // TODO: Integration with StatsComponent for RPG damage scaling:
@@ -12,8 +12,8 @@
 
 namespace godot {
 
-class CombatComponent : public Node {
-    GDCLASS(CombatComponent, Node);
+class CombatComponent : public BaseComponent {
+    GDCLASS(CombatComponent, BaseComponent);
 
 private:
     float base_attack_damage = 10.0f;

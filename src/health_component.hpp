@@ -1,16 +1,17 @@
 #pragma once
 
+#include "actor.hpp"
+#include "base_component.hpp"
 #include "stats_component.hpp"
-#include <godot_cpp/classes/node.hpp>
 
 namespace godot 
 {
-    class HealthComponent : public Node {
+    class HealthComponent : public BaseComponent {
 
-    GDCLASS(HealthComponent, Node);
+    GDCLASS(HealthComponent, BaseComponent);
 
     protected:
-        void _notification(int p_what);
+        void _on_actor_ready(Actor* p_owner) override;
         static void _bind_methods();
 
     public:

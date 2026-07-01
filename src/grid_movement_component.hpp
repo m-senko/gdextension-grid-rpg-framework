@@ -1,19 +1,19 @@
 #pragma once
 
-#include "grid_map_singleton.hpp"
-#include <godot_cpp/classes/node2d.hpp>
+#include "base_component.hpp"
 #include <godot_cpp/variant/vector2i.hpp>
 
 namespace godot {
 
-class GridMovementComponent : public Node2D {
-    GDCLASS(GridMovementComponent, Node2D);
+class Actor;
+
+class GridMovementComponent : public BaseComponent {
+    GDCLASS(GridMovementComponent, BaseComponent);
 
 private:
     Vector2i grid_position;
     int cell_size;
-
-    GridMapSingleton* map_singltone; 
+    Actor* owner = nullptr;
 
 protected:
     static void _bind_methods();
@@ -23,7 +23,7 @@ public:
     ~GridMovementComponent();
 
     void _exit_tree() override;
-    void _ready() override;
+    void _on_actor_ready(Actor* p_owner) override;
 
     bool map_init();
 

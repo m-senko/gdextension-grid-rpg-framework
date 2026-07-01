@@ -9,6 +9,8 @@ hp_per_vitality = 10.0
 [node name="Player" type="Actor" unique_id=95756386]
 script = ExtResource("1_onrkg")
 
+[node name="GridMovementComponent" type="GridMovementComponent" parent="." unique_id=530454159]
+
 [node name="HealthComponent" type="HealthComponent" parent="." unique_id=1145320270]
 current_health = 200.0
 max_health = 200.0
@@ -19,9 +21,6 @@ max_health = 200.0
 balance_config = SubResource("StatsBalanceConfig_4dohe")
 
 [node name="CombatComponent" type="CombatComponent" parent="." unique_id=963788604]
-
-[node name="GridMovementComponent" type="GridMovementComponent" parent="." unique_id=1539596255]
-scale = Vector2(1, 32)
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1851165958]
 position = Vector2(16, 16)

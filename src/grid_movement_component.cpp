@@ -1,7 +1,11 @@
+#include "actor.hpp"
 #include "grid_movement_component.hpp"
 #include "grid_map_singleton.hpp"
 #include <godot_cpp/core/class_db.hpp>
 #include <godot_cpp/variant/utility_functions.hpp>
+
+// TODO: Refactor movement initialization and core grid-based logic:
+// Delegate pixel-to-grid coordinate calculations to map_singltone->pixel_to_grid() to remove mathematical duplication.
 
 namespace godot {
 
@@ -22,49 +26,41 @@ void GridMovementComponent::_bind_methods() {
 
 GridMovementComponent::GridMovementComponent() 
 :   grid_position(0, 0),
-    cell_size(32),
-    map_singltone(nullptr)
+    cell_size(32)
 {}
 
 GridMovementComponent::~GridMovementComponent() {}
 
 void GridMovementComponent::_exit_tree() {
-    if (GridMapSingleton::get_singleton() != nullptr) {
-        
-        if (map_singltone != nullptr) {
-            map_singltone->clear_occupant(grid_position);
-        }
+    GridMapSingleton* map_singltone = GridMapSingleton::get_singleton();
+    if(map_singltone != nullptr){
+        map_singltone->clear_occupant(grid_position);
     }
 }
 
-void GridMovementComponent::_ready() {
-    if(!map_init()){ return; }
 
-    Vector2 pixel_pos = get_global_position();
+void GridMovementComponent::_on_actor_ready(Actor* p_owner){
+    owner = p_owner;
+    GridMapSingleton* map_singltone = GridMapSingleton::get_singleton();
+    if(map_singltone == nullptr){ return; }
+
+    Vector2 pixel_pos = owner->get_global_position();
 
     grid_position.x = static_cast<int>(std::floor(pixel_pos.x / cell_size));
     grid_position.y = static_cast<int>(std::floor(pixel_pos.y / cell_size));
 
     UtilityFunctions::print("Entity initialized at C++ Grid Position: ", grid_position);
     set_grid_position(grid_position);
-    
-    map_singltone->set_occupant(grid_position, get_owner()); 
-}
 
-bool GridMovementComponent::map_init()
-{
-    map_singltone = GridMapSingleton::get_singleton();
-    if (map_singltone == nullptr) {
-        ERR_PRINT("GridMapSingleton singleton is missing! Grid movement will not function.");
-        return false;
-    }
-    return true;
+    map_singltone->set_occupant(grid_position, owner); 
 }
 
 void GridMovementComponent::set_grid_position(Vector2i p_pos) {
+    GridMapSingleton* map_singltone = GridMapSingleton::get_singleton();
+
     if(map_singltone != nullptr){
         map_singltone->clear_occupant(grid_position);
-        map_singltone->set_occupant(p_pos, get_owner());
+        map_singltone->set_occupant(p_pos, owner);
     }
     emit_signal("moved", p_pos, grid_position);
     grid_position = p_pos;
@@ -81,10 +77,11 @@ bool GridMovementComponent::try_move(Vector2i p_direction) {
 
     Vector2i target_cell = grid_position + p_direction;
 
+    GridMapSingleton* map_singltone = GridMapSingleton::get_singleton();
     
     if (map_singltone != nullptr && map_singltone->is_tile_walkable(target_cell)) {
         set_grid_position(target_cell);
-        map_singltone->on_cell_entered(target_cell, get_owner());
+        map_singltone->on_cell_entered(target_cell, owner);
         return true; 
     }
 

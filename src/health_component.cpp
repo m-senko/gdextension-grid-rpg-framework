@@ -1,4 +1,5 @@
 #include "health_component.hpp"
+#include "stats_component.hpp"
 #include <algorithm>
 #include <godot_cpp/core/class_db.hpp>
 #include <godot_cpp/variant/utility_functions.hpp>
@@ -14,6 +15,7 @@
 
 namespace godot
 {
+
     void HealthComponent::_bind_methods() {
         ClassDB::bind_method(D_METHOD("set_health", "new_health"), &HealthComponent::set_health);
         ClassDB::bind_method(D_METHOD("get_health"), &HealthComponent::get_health);
@@ -36,27 +38,17 @@ namespace godot
 
     HealthComponent::~HealthComponent(){}
 
-    void HealthComponent::_notification(int p_what) {
-        if (p_what == NOTIFICATION_READY) {
-            Node* parent = get_parent();
-            if (parent) {
-                int child_count = parent->get_child_count();
-                for (int i = 0; i < child_count; ++i) {
-                    StatsComponent* casted = Object::cast_to<StatsComponent>(parent->get_child(i));
-                    if (casted) {
-                        stats_component = casted;
-                        break;
-                    }
-                }
-            }
+    void HealthComponent::_on_actor_ready(Actor* p_owner)
+    {
+        stats_component = p_owner->get_component<StatsComponent>();
 
-            if (stats_component != nullptr) {
-                stats_component->connect("stats_changed", Callable(this, "_on_stats_changed"));
-            }
-            update_max_health();
-            current_health = max_health;
+        if (stats_component != nullptr) {
+            stats_component->connect("stats_changed", Callable(this, "_on_stats_changed"));
         }
+        update_max_health();
+        current_health = max_health;
     }
+
 
     void HealthComponent::update_max_health() {
         float target_max = base_health;

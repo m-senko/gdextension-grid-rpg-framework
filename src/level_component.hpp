@@ -1,11 +1,11 @@
 #pragma once
 
-#include "godot_cpp/classes/node.hpp"
+#include "base_component.hpp"
 
 namespace godot {
 
-class LevelComponent : public Node {
-    GDCLASS(LevelComponent, Node);
+class LevelComponent : public BaseComponent {
+    GDCLASS(LevelComponent, BaseComponent);
 
 private:
     float total_xp;

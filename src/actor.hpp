@@ -14,12 +14,11 @@ private:
 
 protected:
     static void _bind_methods();
+    void _notification(int p_what); 
 
 public:
     Actor();
     ~Actor();
-
-    void _ready() override;
 
     template <typename T>
     T* get_component() {

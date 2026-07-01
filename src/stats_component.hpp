@@ -1,12 +1,12 @@
 #pragma once
 
-#include <godot_cpp/classes/node.hpp>
+#include "base_component.hpp"
 #include "stats_balance_config.hpp"
 
 namespace godot {
 
-class StatsComponent : public Node {
-    GDCLASS(StatsComponent, Node);
+class StatsComponent : public BaseComponent {
+    GDCLASS(StatsComponent, BaseComponent);
 
 public:
     enum Attribute {

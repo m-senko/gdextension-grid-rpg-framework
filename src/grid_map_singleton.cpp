@@ -3,6 +3,11 @@
 #include <godot_cpp/variant/utility_functions.hpp>
 #include <godot_cpp/classes/tile_data.hpp>
 
+// TODO: Coordinate conversion API for external systems and visual handling:
+// 1. Implement Vector2i pixel_to_grid(Vector2 p_pixel_pos) const using visual_layer->local_to_map().
+// 2. Implement Vector2 grid_to_pixel(Vector2i p_grid_pos) const using visual_layer->map_to_local().
+// 3. Register both methods via ClassDB::bind_method to expose them to GDScript for visual tweening.
+
 namespace godot {
 
 // =============================================================================
@@ -38,18 +43,21 @@ GridMapSingleton::~GridMapSingleton() {
     }
 }
 
-void GridMapSingleton::_ready() {
-    if (singleton == nullptr) {
-        singleton = this;
+void GridMapSingleton::_notification(int p_what) {
+    if (p_what == NOTIFICATION_READY) {
+        if (singleton == nullptr) {
+            singleton = this;
+        }
+        
+        visual_layer = get_node<TileMapLayer>("../TileMapLayer");
+        
+        if (visual_layer != nullptr) {
+            initialize_map();
+        } else {
+            UtilityFunctions::print("Warning: GridMapSingleton could not find TileMapLayer node!");
+        }
     }
-    
-    visual_layer = get_node<TileMapLayer>("../TileMapLayer");
-    
-    if (visual_layer != nullptr) {
-        initialize_map();
-    } else {
-        UtilityFunctions::print("Warning: GridMapSingleton could not find TileMapLayer node!");
-    }
+    Node::_notification(p_what);
 }
 
 void GridMapSingleton::initialize_map() {

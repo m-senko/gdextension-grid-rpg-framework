@@ -22,7 +22,7 @@ void initialize_gdextension_types(ModuleInitializationLevel p_level)
 	if (p_level != MODULE_INITIALIZATION_LEVEL_SCENE) {
 		return;
 	}
-
+	ClassDB::register_class<BaseComponent>();
 	ClassDB::register_class<HealthComponent>();
     ClassDB::register_class<LevelComponent>();
 	ClassDB::register_class<StatsComponent>();
@@ -31,7 +31,6 @@ void initialize_gdextension_types(ModuleInitializationLevel p_level)
 	ClassDB::register_class<StatsBalanceConfig>();
 	ClassDB::register_class<Actor>();
 	ClassDB::register_class<CombatComponent>();
-	ClassDB::register_class<BaseComponent>();
 }
 
 void uninitialize_gdextension_types(ModuleInitializationLevel p_level) {

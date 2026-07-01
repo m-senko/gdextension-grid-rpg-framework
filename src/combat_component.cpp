@@ -4,6 +4,13 @@
 #include "grid_map_singleton.hpp"
 #include <godot_cpp/core/class_db.hpp>
 
+// TODO: Integration with StatsComponent for RPG damage scaling:
+// 1. In initialization/_ready, try to find and cache a pointer to the owner's StatsComponent.
+// 2. Add and maintain a 'base_attack_damage' field (with getters/setters) to act as a fallback.
+// 3. Implement dynamic damage calculation logic inside the attack(p_global_cell) method:
+//    - If StatsComponent is available: calculate final damage by combining 'base_attack_damage' with stats/attributes modifiers.
+//    - If StatsComponent is missing: fall back to using just the 'base_attack_damage' value.
+
 namespace godot {
 
 void CombatComponent::_bind_methods() {

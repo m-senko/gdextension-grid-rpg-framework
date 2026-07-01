@@ -15,6 +15,8 @@ namespace godot {
 // =============================================================================
 
 void GridMapSingleton::_bind_methods() {
+    ClassDB::bind_static_method("GridMapSingleton", D_METHOD("get_singleton"), &GridMapSingleton::get_singleton);
+    
     ClassDB::bind_method(D_METHOD("pixel_to_grid", "p_pixel_pos"), &GridMapSingleton::pixel_to_grid);
     ClassDB::bind_method(D_METHOD("grid_to_pixel", "p_grid_pos"), &GridMapSingleton::grid_to_pixel);
 
@@ -108,7 +110,8 @@ bool GridMapSingleton::is_index_valid(Vector2i p_local_cell) const {
 
 Vector2i GridMapSingleton::pixel_to_grid(Vector2 p_pixel_pos) const {
     if (visual_layer != nullptr) {
-        return visual_layer->local_to_map(p_pixel_pos);
+        Vector2 local_pos = visual_layer->to_local(p_pixel_pos);
+        return visual_layer->local_to_map(local_pos);
     }
     return Vector2i(
         static_cast<int>(std::floor(p_pixel_pos.x / cell_size)),
@@ -118,9 +121,16 @@ Vector2i GridMapSingleton::pixel_to_grid(Vector2 p_pixel_pos) const {
 
 Vector2 GridMapSingleton::grid_to_pixel(Vector2i p_grid_pos) const {
     if (visual_layer != nullptr) {
-        return visual_layer->map_to_local(p_grid_pos);
+        Vector2 local_pos = visual_layer->map_to_local(p_grid_pos);
+        
+        return visual_layer->to_global(local_pos);
     }
-    return Vector2(p_grid_pos.x * cell_size + 32.0f, p_grid_pos.y * cell_size + 32.0f);
+    
+    float half_cell = cell_size * 0.5f;
+    return Vector2(
+        p_grid_pos.x * cell_size + half_cell, 
+        p_grid_pos.y * cell_size + half_cell
+    );
 }
 
 // =============================================================================

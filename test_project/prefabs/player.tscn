@@ -23,7 +23,6 @@ balance_config = SubResource("StatsBalanceConfig_4dohe")
 [node name="CombatComponent" type="CombatComponent" parent="." unique_id=963788604]
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1851165958]
-position = Vector2(16, 16)
 scale = Vector2(0.25, 0.25)
 texture = ExtResource("1_4flbx")
 

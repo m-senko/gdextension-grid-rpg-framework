@@ -1,7 +1,7 @@
 #include "combat_component.hpp"
 #include "actor.hpp"
-#include "health_component.hpp"
 #include "grid_map_singleton.hpp"
+#include "health_component.hpp"
 #include <godot_cpp/core/class_db.hpp>
 
 // TODO: Integration with StatsComponent for RPG damage scaling:

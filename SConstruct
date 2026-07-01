@@ -88,6 +88,16 @@ doc_output_dir = env['doc_output_dir']        # Directory for documentation outp
 precision = env.get('precision', 'single')     # Ensure precision defaults to single
 bundle_id_prefix = env.get('bundle_id_prefix', 'com.gdextension')  # Ensure prefix defaults to com.gdextension
 
+src_root = "src"
+if os.path.exists(src_root):
+    if src_root not in include_dirs:
+        include_dirs.append(src_root)
+        
+    for root, dirs, files in os.walk(src_root):
+        fixed_path = root.replace('\\', '/')
+        if fixed_path not in include_dirs:
+            include_dirs.append(fixed_path)
+
 # Append include directories to CPPPATH
 env.Append(CPPPATH=include_dirs)
 

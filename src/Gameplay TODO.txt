@@ -1,0 +1,7 @@
+// TODO (Gameplay Phase): Implement fractional turn/Action Points (AP) logic with Turn Banking:
+// 1. Maintain an 'action_points' pool (default max 1.0 per standard turn) for the player inside GDScript.
+// 2. Define varied action costs (e.g., fast dagger strike = 0.5 AP, standard move = 1.0 AP, heavy swing = 1.5 AP).
+// 3. Deduct costs on action execution and call GameManager::trigger_enemy_turns() only when AP drops to <= 0.0.
+// 4. Implement Turn Banking (Guard/Pass): If the player skips their turn, leftover AP stacks into the next turn.
+// 5. Enforce a banking limit (e.g., maximum of 2.0 total AP). Add a 'max_ap_limit' variable to later support perks/skills that increase this limit to 3.0 AP.
+// 6. Carry over any negative AP debt (e.g., -0.2 AP leaves 0.8 AP for the next turn) to ensure strict tactical balance.

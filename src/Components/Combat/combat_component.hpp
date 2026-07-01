@@ -1,6 +1,6 @@
 #pragma  once
 
-#include "base_component.hpp"
+#include "Components/base_component.hpp"
 #include <godot_cpp/variant/vector2i.hpp>
 
 

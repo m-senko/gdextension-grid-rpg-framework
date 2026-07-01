@@ -12,7 +12,6 @@ class GridMovementComponent : public BaseComponent {
 
 private:
     Vector2i grid_position;
-    int cell_size;
     Actor* owner = nullptr;
 
 protected:
@@ -29,9 +28,6 @@ public:
 
     void set_grid_position(Vector2i p_pos);
     Vector2i get_grid_position() const;
-
-    void set_cell_size(int p_size);
-    int get_cell_size() const;
 
     bool try_move(Vector2i p_direction);
 };

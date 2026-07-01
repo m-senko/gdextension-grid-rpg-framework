@@ -28,6 +28,7 @@ private:
     std::vector<std::vector<CellState>> matrix;
     Vector2i map_size;
     Vector2i map_offset;
+    float cell_size = 32;
     TileMapLayer* visual_layer;
 
     static GridMapSingleton* singleton;
@@ -55,7 +56,13 @@ public:
 
 // =============================================================================
 // Grid Logic - Global Coordinates (API Overtures for GDScript / External Nodes)
-// =============================================================================
+// =============================================================================    
+    void set_cell_size(float p_size);
+    float get_cell_size() const;
+
+    Vector2i pixel_to_grid(Vector2 p_pixel_pos) const;
+    Vector2 grid_to_pixel(Vector2i p_grid_pos) const;
+
     Node* get_occupant(Vector2i p_global_cell);
     Node* get_effect(Vector2i p_global_cell);
     bool is_tile_walkable(Vector2i p_global_cell);

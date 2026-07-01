@@ -3,10 +3,10 @@
 #include <godot_cpp/variant/utility_functions.hpp>
 #include <godot_cpp/classes/tile_data.hpp>
 
-// TODO: Coordinate conversion API for external systems and visual handling:
-// 1. Implement Vector2i pixel_to_grid(Vector2 p_pixel_pos) const using visual_layer->local_to_map().
-// 2. Implement Vector2 grid_to_pixel(Vector2i p_grid_pos) const using visual_layer->map_to_local().
-// 3. Register both methods via ClassDB::bind_method to expose them to GDScript for visual tweening.
+// TODO (Future Expansion / Backlog): Multi-cell object support (e.g., 2x2, 3x3 large units):
+// 1. Extend CellState struct matrix to support tracking a single ObjectID across multiple adjacent grid coordinates.
+// 2. Implement set_occupant_multicell(p_start_cell, p_size, p_node) to loop through and validate/occupy an array of tiles.
+// 3. Update grid_to_pixel conversion to dynamically offset the visual center of large sprites (so a 2x2 actor anchors perfectly at cell intersections).
 
 namespace godot {
 
@@ -15,6 +15,9 @@ namespace godot {
 // =============================================================================
 
 void GridMapSingleton::_bind_methods() {
+    ClassDB::bind_method(D_METHOD("pixel_to_grid", "p_pixel_pos"), &GridMapSingleton::pixel_to_grid);
+    ClassDB::bind_method(D_METHOD("grid_to_pixel", "p_grid_pos"), &GridMapSingleton::grid_to_pixel);
+
     ClassDB::bind_method(D_METHOD("is_tile_walkable", "p_cell"), &GridMapSingleton::is_tile_walkable);
     ClassDB::bind_method(D_METHOD("on_cell_entered", "p_cell", "p_node"), &GridMapSingleton::on_cell_entered);
     
@@ -23,6 +26,11 @@ void GridMapSingleton::_bind_methods() {
 
     ClassDB::bind_method(D_METHOD("set_occupant", "p_cell", "p_node"), &GridMapSingleton::set_occupant);
     ClassDB::bind_method(D_METHOD("clear_occupant", "p_cell"), &GridMapSingleton::clear_occupant);
+
+    ClassDB::bind_method(D_METHOD("set_cell_size", "p_size"), &GridMapSingleton::set_cell_size);
+    ClassDB::bind_method(D_METHOD("get_cell_size"), &GridMapSingleton::get_cell_size);
+
+    ClassDB::add_property("GridMapSingleton", PropertyInfo(Variant::FLOAT, "cell_size"), "set_cell_size", "get_cell_size");
 }
 
 // =============================================================================
@@ -98,6 +106,23 @@ bool GridMapSingleton::is_index_valid(Vector2i p_local_cell) const {
            p_local_cell.y >= 0 && p_local_cell.y < map_size.y;
 }
 
+Vector2i GridMapSingleton::pixel_to_grid(Vector2 p_pixel_pos) const {
+    if (visual_layer != nullptr) {
+        return visual_layer->local_to_map(p_pixel_pos);
+    }
+    return Vector2i(
+        static_cast<int>(std::floor(p_pixel_pos.x / cell_size)),
+        static_cast<int>(std::floor(p_pixel_pos.y / cell_size))
+    );
+}
+
+Vector2 GridMapSingleton::grid_to_pixel(Vector2i p_grid_pos) const {
+    if (visual_layer != nullptr) {
+        return visual_layer->map_to_local(p_grid_pos);
+    }
+    return Vector2(p_grid_pos.x * cell_size + 32.0f, p_grid_pos.y * cell_size + 32.0f);
+}
+
 // =============================================================================
 // Grid Logic - Local Coordinates (Internal Business Logic)
 // =============================================================================
@@ -142,6 +167,14 @@ bool GridMapSingleton::is_tile_walkable_local(Vector2i p_local_cell) {
 // =============================================================================
 // Grid Logic - Global Coordinates (API Overtures for GDScript / External Nodes)
 // =============================================================================
+
+void GridMapSingleton::set_cell_size(float p_size) {
+    cell_size = std::max(1.0f, p_size);
+}
+
+float GridMapSingleton::get_cell_size() const {
+    return cell_size;
+}
 
 Node* GridMapSingleton::get_occupant(Vector2i p_global_cell) {
     return get_occupant_local(global_to_grid(p_global_cell));

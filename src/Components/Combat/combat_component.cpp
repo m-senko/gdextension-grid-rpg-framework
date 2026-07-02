@@ -15,16 +15,33 @@ namespace godot {
 
 void CombatComponent::_bind_methods() {
     ClassDB::bind_method(D_METHOD("attack", "p_global_cell"), &CombatComponent::attack);
+
+    ClassDB::bind_method(D_METHOD("set_base_attack_damage", "p_damage"), &CombatComponent::set_base_attack_damage);
+    ClassDB::bind_method(D_METHOD("get_base_attack_damage"), &CombatComponent::get_base_attack_damage);
+
+    ClassDB::add_property("CombatComponent", PropertyInfo(Variant::FLOAT, "base_attack_damage"), "set_base_attack_damage", "get_base_attack_damage");
 }
 
 CombatComponent::CombatComponent() {}
 CombatComponent::~CombatComponent() {}
 
-void CombatComponent::attack(Vector2i p_global_cell) {
+void CombatComponent::_on_actor_ready(Actor* p_owner) {
+    if (p_owner == nullptr) return;
 
+    stats_component = p_owner->get_component<StatsComponent>();
+}
+
+void CombatComponent::set_base_attack_damage(float p_damage) {
+    base_attack_damage = std::max(0.0f, p_damage);
+}
+
+float CombatComponent::get_base_attack_damage() const {
+    return base_attack_damage;
+}
+
+void CombatComponent::attack(Vector2i p_global_cell) {
     GridMapSingleton* grid_map = GridMapSingleton::get_singleton();
     if (grid_map == nullptr) { return; }
-
 
     Node* occupant = grid_map->get_occupant(p_global_cell);
     if (occupant == nullptr) { return; }
@@ -33,10 +50,19 @@ void CombatComponent::attack(Vector2i p_global_cell) {
     if (target_actor == nullptr) { return; }
 
     HealthComponent* target_health = target_actor->get_component<HealthComponent>();
+    if (target_health == nullptr) { return; }
 
-    if (target_health != nullptr) {
-        target_health->take_damage(base_attack_damage);
+    float final_damage = base_attack_damage;
+
+    if (stats_component != nullptr) {
+        float strength_bonus = stats_component->get_attribute(StatsComponent::ATTR_PHYSICAL_ATTACK_BONUS);
+        
+        final_damage += strength_bonus;
+        
     }
+    
+    UtilityFunctions::print("CombatComponent: Inflicting scaled damage: ", final_damage, " onto target.");
+    target_health->take_damage(final_damage);
 }
 
 } // namespace godot

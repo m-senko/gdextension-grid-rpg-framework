@@ -38,9 +38,9 @@ void initialize_gdextension_types(ModuleInitializationLevel p_level)
 	ClassDB::register_class<CombatComponent>();
 	ClassDB::register_class<GameManagerSingleton>();
 	ClassDB::register_class<AIComponent>();
-	GDREGISTER_CLASS(StateAIModule);
-	GDREGISTER_CLASS(MovementAIModule);
-	GDREGISTER_CLASS(CombatAIModule);
+	ClassDB::register_class<StateAIModule>();
+	ClassDB::register_class<MovementAIModule>();
+	ClassDB::register_class<CombatAIModule>();
 }
 
 void uninitialize_gdextension_types(ModuleInitializationLevel p_level) {

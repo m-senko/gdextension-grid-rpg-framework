@@ -15,18 +15,27 @@ script = ExtResource("1_cypye")
 [node name="GridMovementComponent" type="GridMovementComponent" parent="." unique_id=2073906707]
 
 [node name="HealthComponent" type="HealthComponent" parent="." unique_id=322187553]
-current_health = 1300.0
-max_health = 1300.0
+current_health = 112.0
+max_health = 112.0
 
 [node name="StatsComponent" type="StatsComponent" parent="." unique_id=584282133]
-agility = 100
-vitality = 100
-endurance = 100
+strength = 1
+agility = 1
+vitality = 1
+endurance = 1
 balance_config = SubResource("StatsBalanceConfig_yfjof")
 
 [node name="CombatComponent" type="CombatComponent" parent="." unique_id=1175083531]
 
 [node name="AIComponent" type="AIComponent" parent="." unique_id=1596333844]
+
+[node name="CombatAIModule" type="CombatAIModule" parent="AIComponent" unique_id=1810111516]
+
+[node name="MovementAIModule" type="MovementAIModule" parent="AIComponent" unique_id=451663881]
+movement_cooldown_turns = 1
+
+[node name="StateAIModule" type="StateAIModule" parent="AIComponent" unique_id=979469460]
+detection_range = 10
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=955813386]
 modulate = Color(1, 0.29411766, 0.29411766, 1)

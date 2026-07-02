@@ -1,5 +1,8 @@
 // Include your classes, that you want to expose to Godot
 
+#include "combat_module.hpp"
+#include "movement_module.hpp"
+#include "state_module.hpp"
 #include "actor.hpp"
 #include "ai_component.hpp"
 #include "base_component.hpp"
@@ -35,6 +38,9 @@ void initialize_gdextension_types(ModuleInitializationLevel p_level)
 	ClassDB::register_class<CombatComponent>();
 	ClassDB::register_class<GameManagerSingleton>();
 	ClassDB::register_class<AIComponent>();
+	GDREGISTER_CLASS(StateAIModule);
+	GDREGISTER_CLASS(MovementAIModule);
+	GDREGISTER_CLASS(CombatAIModule);
 }
 
 void uninitialize_gdextension_types(ModuleInitializationLevel p_level) {

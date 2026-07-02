@@ -43,7 +43,10 @@ namespace godot
         stats_component = p_owner->get_component<StatsComponent>();
 
         if (stats_component != nullptr) {
-            stats_component->connect("stats_changed", Callable(this, "_on_stats_changed"));
+            if (!stats_component->is_connected("stats_changed", Callable(this, "_on_stats_changed"))) 
+            {
+                stats_component->connect("stats_changed", Callable(this, "_on_stats_changed"));
+            }
         }
         update_max_health();
         current_health = max_health;

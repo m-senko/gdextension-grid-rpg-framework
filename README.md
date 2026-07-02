@@ -10,6 +10,12 @@ The primary goal of the framework is to provide developers and game designers wi
 * **Integration Technology:** GDExtension (`godot-cpp`)
 * **Build System:** SCons (featuring a custom `SConstruct` script with automated recursive subdirectory scanning via Python)
 
+<p align="center">
+  <img src="demo_gif/demo1.gif" width="700" alt="Core Gameplay Loop Demonstration"/>
+  <br>
+  <i>Core gameplay showcase: Synchronized world ticks driving multiple active enemy AI targets pursuing the player across the grid map.</i>
+</p>
+
 ---
 
 ## Key Architectural Decisions
@@ -32,6 +38,18 @@ Global systems (map tracking, turn management) are orchestrated via scene-based 
 * Entities on the grid and within turn queues are tracked using numerical `uint64_t` identifiers (`ObjectID`) stored inside `std::unordered_set`.
 * Object validity is verified on demand via `ObjectDB::get_instance()`. This provides robust protection against wild pointers and crashes when dynamically freeing nodes (`queue_free()`) or hot-reloading the GDExtension DLL inside the editor.
 
+<p align="center">
+  <img src="demo_gif/demo2.gif" width="650" alt="Minimal Configuration Enemy Demo"/>
+  <br>
+  <i>Demonstration of a modular Enemy entity functioning with near-zero GDScript, driven entirely by native C++ GDExtension components.</i>
+</p>
+
+<p align="center">
+  <img src="demo_gif/demo3.gif" width="650" alt="Component Decoupling and Fault Tolerance"/>
+  <br>
+  <i>Fault tolerance showcase: The Enemy entity continues to run and navigate smoothly even after CombatComponent, StatsComponent, and CombatAIModule are completely deleted from its tree.</i>
+</p>
+
 ---
 
 ## Framework Module Structure
@@ -50,6 +68,12 @@ Global systems (map tracking, turn management) are orchestrated via scene-based 
 * `HealthComponent`: Manages damage tracking. Automatically scales maximum health when owner stats change, processing incoming damage through mitigation and dodge formulas.
 * `CombatComponent`: Logic node for grid-based attacks. Responsible for locating targets in the attack direction and scaling base weapon damage based on the attacker's strength attribute.
 * `LevelComponent`: Placeholder component prepared for handling experience gain, level progression, and RPG class attributes.
+
+<p align="center">
+  <img src="demo_gif/demo4.gif" width="650" alt="Dynamic Health Scaling via Vitality Attribute"/>
+  <br>
+  <i>Data-driven parameter scaling: Changing the Vitality attribute in the Inspector instantly recalculates and updates the Enemy's maximum and current health pool in real-time.</i>
+</p>
 
 ### Artificial Intelligence (AI System)
 The main `AIComponent` acts as a high-level orchestrator managing hidden child nodes (`Node`), allowing designers to customize enemy and civilian NPC behaviors like building blocks directly in the Godot Inspector:
@@ -83,6 +107,12 @@ The main `AIComponent` acts as a high-level orchestrator managing hidden child n
 * **Технология интеграции:** GDExtension (`godot-cpp`)
 * **Система сборки:** SCons (скрипт `SConstruct` с автоматическим динамическим сканированием вложенных директорий на Python)
 
+<p align="center">
+  <img src="demo_gif/demo1.gif" width="700" alt="Демонстрация игрового процесса фреймворка"/>
+  <br>
+  <i>Общая демонстрация игрового процесса: синхронные пошаговые тики мира управляют группой активных противников, преследующих игрока по сетке уровня.</i>
+</p>
+
 ---
 
 ## Ключевые архитектурные решения
@@ -105,6 +135,18 @@ The main `AIComponent` acts as a high-level orchestrator managing hidden child n
 * Хранение объектов на сетке и в очереди ходов реализовано через числовые `uint64_t` идентификаторы (`ObjectID`) внутри `std::unordered_set`. 
 * При обращении к объекту его валидность проверяется через `ObjectDB::get_instance()`. Это гарантирует 100% защиту от «диких» указателей (wild pointers) и крашей при динамическом удалении врагов (`queue_free()`) или горячей перезагрузке DLL-библиотеки в редакторе.
 
+<p align="center">
+  <img src="demo_gif/demo2.gif" width="650" alt="Демонстрация минимальной конфигурации врага"/>
+  <br>
+  <i>Демонстрация работы модульной сущности Enemy с минимальным объемом GDScript-кода, управляемой исключительно нативными C++ компонентами.</i>
+</p>
+
+<p align="center">
+  <img src="demo_gif/demo3.gif" width="650" alt="Отказоустойчивость и независимость компонентов"/>
+  <br>
+  <i>Пример низкой связанности систем: сущность Enemy продолжает стабильно работать и перемещаться по карте даже после полного удаления узлов CombatComponent, StatsComponent и CombatAIModule из её дерева.</i>
+</p>
+
 ---
 
 ## Структура модулей фреймворка
@@ -124,6 +166,12 @@ The main `AIComponent` acts as a high-level orchestrator managing hidden child n
 * `CombatComponent`: Логический узел атаки. Отвечает за поиск цели на сетке в направлении удара и скейлинг базового урона от показателя силы атакующего.
 * `LevelComponent`: Модуль учета опыта, прокачки уровней и классов персонажа (подготовлен к интеграции).
 
+<p align="center">
+  <img src="demo_gif/demo4.gif" width="650" alt="Динамический пересчет здоровья от выносливости"/>
+  <br>
+  <i>Data-driven масштабирование: изменение показателя Vitality (Живучесть) в инспекторе Godot мгновенно запускает нативный пересчет и обновляет максимальный запас здоровья врага в реальном времени.</i>
+</p>
+
 ### Искусственный Интеллект (AI System)
 Главный компонент `AIComponent`: спроектирован как высокоуровневый координатор, управляющий скрытыми дочерними узлами-модулями (Node), что позволяет настраивать поведение врагов и мирных NPC как конструктор прямо в инспекторе Godot:
 * `StateAIModule`: Конечный автомат (FSM), определяющий текущую модель поведения (Wander, Chase, Combat) на основе Манхэттенского расстояния.
@@ -141,4 +189,7 @@ The main `AIComponent` acts as a high-level orchestrator managing hidden child n
 * [ ] **Система эффектов (Status Effects):** Реализация механики баффов/дебаффов, периодического урона (DoT) и интерактивных эффектов на тайлах карты (огонь, яд, замедление).
 * [ ] **Поведение NPC:** Написание модулей для мирного поведения, включая торговые системы и интеграцию с диалоговыми деревьями.
 
+
+---
+---
 

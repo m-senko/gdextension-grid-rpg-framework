@@ -30,6 +30,11 @@ namespace godot
 
         ClassDB::bind_method(D_METHOD("take_damage", "p_base_damage"), &HealthComponent::take_damage);
 
+        BIND_ENUM_CONSTANT(DAMAGE_INVALID);
+        BIND_ENUM_CONSTANT(DAMAGE_APPLIED);
+        BIND_ENUM_CONSTANT(DAMAGE_EVADED);
+        BIND_ENUM_CONSTANT(DAMAGE_BLOCKED);
+
         ADD_SIGNAL(MethodInfo("died"));
         ADD_SIGNAL(MethodInfo("health_changed", PropertyInfo(Variant::FLOAT, "next_health"), PropertyInfo(Variant::FLOAT, "prev_health"), PropertyInfo(Variant::FLOAT, "max_health")));
     }
@@ -97,6 +102,7 @@ namespace godot
     {
         float old_max = max_health;
         max_health = std::max(0.1f, p_max_health);
+        if(!is_alive()){ return; }
         float percent = (old_max > 0.0f) ? (current_health / old_max) : 1.0f;
         set_health(max_health * percent); 
     }
@@ -106,25 +112,45 @@ namespace godot
         return max_health;
     }
 
-    bool HealthComponent::take_damage(float p_base_damage) {
-        if (!is_alive() || p_base_damage <= 0) { return false; }
+    Dictionary HealthComponent::take_damage(float p_base_damage) {
+        Dictionary report;
+        report["result"] = DAMAGE_INVALID;
+        report["final"] = 0.0f;
+        report["absorbed"] = 0.0f;
+
+        if (!is_alive() || p_base_damage <= 0) { 
+            return report; 
+        }
 
         float final_damage = p_base_damage;
+        float absorbed_damage = 0.0f;
 
         if (stats_component != nullptr) {
             float evade_chance = stats_component->get_attribute(StatsComponent::ATTR_EVADE_CHANCE);
             if (UtilityFunctions::randf() * 100 < evade_chance) {
-                return false;
+                report["result"] = DAMAGE_EVADED;
+                report["absorbed"] = p_base_damage;
+                return report;
             }
 
             float reduction = stats_component->get_attribute(StatsComponent::ATTR_DAMAGE_REDUCTION);
-            final_damage = p_base_damage * (1 - (reduction / 100));
+            final_damage = p_base_damage * (1.0f - (reduction / 100.0f));
+            absorbed_damage = p_base_damage - final_damage;
         }
 
-        if (final_damage <= 0) { return true; }
-        set_health(current_health - final_damage);
+        if (final_damage <= 0) { 
+            report["result"] = DAMAGE_BLOCKED;
+            report["absorbed"] = p_base_damage;
+            return report; 
+        }
 
-        return true;
+        set_health(current_health - final_damage);
+        
+        report["result"] = DAMAGE_APPLIED;
+        report["final"] = final_damage;
+        report["absorbed"] = absorbed_damage;
+
+        return report;
     }
 
 } // namespace godot

@@ -29,6 +29,13 @@ namespace godot
 
         bool is_alive() const;
 
+        enum DamageResult {
+            DAMAGE_INVALID,
+            DAMAGE_APPLIED,
+            DAMAGE_EVADED,
+            DAMAGE_BLOCKED
+        };
+
         // void set_regeneration(float p_amount, float p_interval);
         
         // void set_regen_amount(float p_amount);
@@ -37,7 +44,7 @@ namespace godot
         // void set_regen_interval(float p_interval);
         // float get_regen_interval() const;
 
-        bool take_damage(float p_base_damage);
+        Dictionary take_damage(float p_base_damage);
 
     private:
         float base_health = 100;
@@ -51,3 +58,5 @@ namespace godot
         StatsComponent* stats_component = nullptr; 
     };
 } // namespace godot
+
+VARIANT_ENUM_CAST(godot::HealthComponent::DamageResult);

@@ -24,7 +24,7 @@ public:
 
     void _on_actor_ready(Actor* p_owner) override;
 
-    void attack(Vector2i p_global_cell);
+    Dictionary attack(Vector2i p_global_cell);
 
     void set_base_attack_damage(float p_damage);
     float get_base_attack_damage() const;

@@ -14,7 +14,7 @@ protected:
 
 public:
     BaseComponent();
-    ~BaseComponent();
+    virtual ~BaseComponent();
 
     virtual void _on_actor_ready(Actor* p_owner);
 };

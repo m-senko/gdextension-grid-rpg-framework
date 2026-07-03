@@ -1,0 +1,6 @@
+[gd_resource type="ItemTemplate" format=3 uid="uid://bco4j7g80oek6"]
+
+[resource]
+id = &"potion_health"
+item_name = "Health Potion"
+base_weight = 0.5

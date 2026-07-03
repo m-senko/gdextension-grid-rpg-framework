@@ -25,7 +25,7 @@ public:
 
     virtual void _on_actor_ready(Actor* p_owner) override;
 
-    bool add_item(const StringName& p_template_id, int p_count);
+    bool add_item(const Ref<ItemTemplate>& p_template, int p_count);
     bool remove_item(int p_index, int p_count);
     bool transfer_to(int p_index, Node* p_target_inventory_node, int p_count);
 

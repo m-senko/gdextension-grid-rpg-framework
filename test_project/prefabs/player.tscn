@@ -31,3 +31,5 @@ position = Vector2(16, 16)
 zoom = Vector2(1.5, 1.5)
 position_smoothing_enabled = true
 drag_right_margin = 0.19
+
+[node name="InventoryComponent" type="InventoryComponent" parent="." unique_id=120384132]

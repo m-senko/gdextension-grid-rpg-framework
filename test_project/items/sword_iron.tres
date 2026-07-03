@@ -1,0 +1,7 @@
+[gd_resource type="ItemTemplate" format=3 uid="uid://co72j8pbtukks"]
+
+[resource]
+id = &"sword_iron"
+item_name = "Iron Sword"
+base_weight = 2.0
+is_stackable = false

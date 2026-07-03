@@ -2,16 +2,14 @@
 #include "actor.hpp"
 #include <godot_cpp/core/object.hpp>
 
+// TODO: ITEM_REGISTRY_SINGLETON - Create a singleton (e.g. ItemDatabase)
+// that scans the resource folder on startup and provides an overloaded 
+// add_item(StringName template_id, int count) method to automatically search for resources inside C++.
+
 namespace godot {
 
-// --- DELETE LATER --- DELETE LATER --- DELETE LATER --- DELETE LATER --- DELETE LATER --- DELETE LATER --- DELETE LATER --- DELETE LATER
-// --- DELETE LATER --- DELETE LATER --- DELETE LATER --- DELETE LATER --- DELETE LATER --- DELETE LATER --- DELETE LATER --- DELETE LATER
-bool get_mock_is_stackable(const StringName& p_template_id);
-// --- DELETE LATER --- DELETE LATER --- DELETE LATER --- DELETE LATER --- DELETE LATER --- DELETE LATER --- DELETE LATER --- DELETE LATER
-// --- DELETE LATER --- DELETE LATER --- DELETE LATER --- DELETE LATER --- DELETE LATER --- DELETE LATER --- DELETE LATER --- DELETE LATER
-
 void InventoryComponent::_bind_methods() {
-    ClassDB::bind_method(D_METHOD("add_item", "p_template_id", "p_count"), &InventoryComponent::add_item);
+    ClassDB::bind_method(D_METHOD("add_item", "p_template", "p_count"), &InventoryComponent::add_item);
     ClassDB::bind_method(D_METHOD("remove_item", "p_index", "p_count"), &InventoryComponent::remove_item);
     ClassDB::bind_method(D_METHOD("transfer_to", "p_index", "p_target_inventory_node", "p_count"), &InventoryComponent::transfer_to);
     
@@ -49,16 +47,17 @@ void InventoryComponent::recalculate_weight() {
     emit_signal("weight_changed", current_weight, base_max_weight);
 }
 
-bool InventoryComponent::add_item(const StringName& p_template_id, int p_count) {
-    if (p_count <= 0) return false;
+bool InventoryComponent::add_item(const Ref<ItemTemplate>& p_template, int p_count) {
+    if (!p_template.is_valid() || p_count <= 0) return false;
 
-    bool is_stackable = get_mock_is_stackable(p_template_id);
+    StringName target_id = p_template->get_id();
+    bool is_stackable = p_template->get_is_stackable();
     bool item_merged = false;
 
     if (is_stackable) {
         for (int i = 0; i < inventory_array.size(); ++i) {
             Ref<ItemInstance> existing_item = inventory_array[i];
-            if (existing_item.is_valid() && existing_item->get_template_id() == p_template_id) {
+            if (existing_item.is_valid() && existing_item->get_template_id() == target_id) {
                 existing_item->set_count(existing_item->get_count() + p_count);
                 item_merged = true;
                 break;
@@ -69,7 +68,7 @@ bool InventoryComponent::add_item(const StringName& p_template_id, int p_count) 
     if (!item_merged) {
         Ref<ItemInstance> new_item;
         new_item.instantiate();
-        new_item->initialize(p_template_id, p_count);
+        new_item->initialize(p_template, p_count);
         inventory_array.append(new_item);
     }
 
@@ -120,7 +119,7 @@ bool InventoryComponent::transfer_to(int p_index, Node* p_target_inventory_node,
         return false; 
     }
 
-    StringName item_id = item->get_template_id();
+    Ref<ItemTemplate> item_id = item->get_template();
 
     if (target_inventory->add_item(item_id, p_count)) {
         this->remove_item(p_index, p_count);

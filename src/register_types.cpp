@@ -2,6 +2,7 @@
 
 #include "Components/Inventory/inventory_component.hpp"
 #include "Components/Inventory/item_instance.hpp"
+#include "Components/Inventory/item_template.hpp"
 #include "combat_module.hpp"
 #include "movement_module.hpp"
 #include "state_module.hpp"
@@ -45,6 +46,7 @@ void initialize_gdextension_types(ModuleInitializationLevel p_level)
 	ClassDB::register_class<CombatAIModule>();
 	ClassDB::register_class<InventoryComponent>();
 	ClassDB::register_class<ItemInstance>();
+	ClassDB::register_class<ItemTemplate>();
 }
 
 void uninitialize_gdextension_types(ModuleInitializationLevel p_level) {

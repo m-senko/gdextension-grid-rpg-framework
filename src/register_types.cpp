@@ -1,5 +1,7 @@
 // Include your classes, that you want to expose to Godot
 
+#include "Components/Inventory/inventory_component.hpp"
+#include "Components/Inventory/item_instance.hpp"
 #include "combat_module.hpp"
 #include "movement_module.hpp"
 #include "state_module.hpp"
@@ -41,6 +43,8 @@ void initialize_gdextension_types(ModuleInitializationLevel p_level)
 	ClassDB::register_class<StateAIModule>();
 	ClassDB::register_class<MovementAIModule>();
 	ClassDB::register_class<CombatAIModule>();
+	ClassDB::register_class<InventoryComponent>();
+	ClassDB::register_class<ItemInstance>();
 }
 
 void uninitialize_gdextension_types(ModuleInitializationLevel p_level) {

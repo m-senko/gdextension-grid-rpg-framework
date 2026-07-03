@@ -4,15 +4,6 @@
 #include <godot_cpp/core/class_db.hpp>
 #include <godot_cpp/variant/utility_functions.hpp>
 
-// TODO: Architectural improvements for the HealthComponent (implement later):
-// 1. Add an enum for DamageResult (DAMAGE_INVALID, DAMAGE_APPLIED, DAMAGE_EVADED, DAMAGE_BLOCKED) 
-//    and register it via VARIANT_ENUM_CAST / BIND_ENUM_CONSTANT.
-// 2. Change the return type of take_damage from bool to Dictionary.
-//    This will allow returning a detailed report {result, final_damage, absorbed_damage}
-//    fast and without RefCounted overhead in both C++ and GDScript.
-// 3. Add a "damage_received"(final_damage, absorbed_damage, result) signal
-//    for easy rendering of floating damage/armor text in the UI.
-
 namespace godot
 {
 

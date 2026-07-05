@@ -1,7 +1,10 @@
 [gd_resource type="ItemTemplate" format=3 uid="uid://co72j8pbtukks"]
 
+[ext_resource type="Texture2D" uid="uid://badmtm8h243y7" path="res://art/item_icon/sword_icon.png" id="1_ws61s"]
+
 [resource]
 id = &"sword_iron"
 item_name = "Iron Sword"
 base_weight = 2.0
 is_stackable = false
+icon = ExtResource("1_ws61s")

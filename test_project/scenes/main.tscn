@@ -3,7 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://i70g2kq6ligo" path="res://art/tilemaps/Dungeon_Tileset.png" id="1_0xm2m"]
 [ext_resource type="PackedScene" uid="uid://dumacnlmlt17r" path="res://prefabs/player.tscn" id="2_0xm2m"]
 [ext_resource type="PackedScene" uid="uid://b8r6j4a0tqle" path="res://prefabs/enemy.tscn" id="3_h2yge"]
-[ext_resource type="PackedScene" uid="uid://cphrh7eu517gl" path="res://prefabs/player_hud.tscn" id="4_1bvp3"]
+[ext_resource type="PackedScene" uid="uid://cphrh7eu517gl" path="res://prefabs/hud/player_hud.tscn" id="4_1bvp3"]
 
 [sub_resource type="GDScript" id="GDScript_0xm2m"]
 script/source = "extends Node2D
@@ -11,7 +11,6 @@ script/source = "extends Node2D
 @onready var player_inv: InventoryComponent = $Player/InventoryComponent
 @onready var chest_inv: InventoryComponent = $Enemy/InventoryComponent
 
-# Предзагружаем ресурсы предметов прямо в скрипт
 const POTION_RESOURCE = preload(\"res://items/potion_health.tres\")
 const SWORD_RESOURCE = preload(\"res://items/sword_iron.tres\")
 
@@ -20,47 +19,13 @@ func _ready() -> void:
 	
 	print(\"--- НАЧАЛО ТЕСТИРОВАНИЯ ДАННЫХ ИЗ РЕСУРСОВ ---\")
 	
-	player_inv.inventory_changed.connect(_on_player_inventory_changed)
-	player_inv.weight_changed.connect(_on_player_weight_changed)
-	
-	# 1. Тест: Добавление стакающихся ресурсов через Godot Resource
-	print(\"\\n[ТЕСТ 1] Добавление ресурсов игроку...\")
+	print(\"\\n Добавление ресурсов игроку...\")
 	player_inv.add_item(POTION_RESOURCE, 5)
-	player_inv.add_item(POTION_RESOURCE, 3) # Должно схлопнуться в 8 шт.
+	player_inv.add_item(POTION_RESOURCE, 3)
 	
-	# 2. Тест: Добавление уникальных ресурсов
 	player_inv.add_item(SWORD_RESOURCE, 1)
-	player_inv.add_item(SWORD_RESOURCE, 1) # Займет два отдельных слота
+	player_inv.add_item(SWORD_RESOURCE, 1)
 	
-	_print_inventory_debug(\"ИГРОК\", player_inv)
-
-	# 3. Тест: Частичное удаление и сжатие плоского списка
-	print(\"\\n[ТЕСТ 2] Игрок тратит 2 зелья...\")
-	player_inv.remove_item(0, 2)
-	_print_inventory_debug(\"ИГРОК\", player_inv)
-
-	# 4. Тест: Атомарный трансфер между универсальными инвентарями
-	print(\"\\n[ТЕСТ 3] Перекладываем меч в сундук...\")
-	var success = player_inv.transfer_to(1, chest_inv, 1)
-	print(\"Результат трансфера: \", success)
-	
-	_print_inventory_debug(\"ИГРОК ПОСЛЕ ТРАНСФЕРА\", player_inv)
-	_print_inventory_debug(\"СУНДУК ПОСЛЕ ТРАНСФЕРА\", chest_inv)
-
-func _print_inventory_debug(owner_name: String, inv: InventoryComponent) -> void:
-	print(\"=== Инвентарь: %s (Вес: %s/%s) ===\" % [owner_name, inv.get_current_weight(), inv.get_max_weight()])
-	var items = inv.get_items()
-	for i in range(items.size()):
-		var item: ItemInstance = items[i]
-		# Доступ к данным теперь идет через объект шаблона .get_template()
-		var template: ItemTemplate = item.get_template() 
-		print(\" Слот [%d]: Название: %s (ID: %s) | Кол-во: %d | Общий вес: %s кг\" % [
-			i, 
-			template.item_name, 
-			item.get_template_id(), 
-			item.count, 
-			item.get_total_weight()
-		])
 	print(\"=========================================\")
 
 func _on_player_inventory_changed() -> void:

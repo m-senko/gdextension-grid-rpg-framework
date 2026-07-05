@@ -1,6 +1,9 @@
 [gd_resource type="ItemTemplate" format=3 uid="uid://bco4j7g80oek6"]
 
+[ext_resource type="Texture2D" uid="uid://ctec1s26rvn0h" path="res://art/item_icon/potion_icon.png" id="1_1mnks"]
+
 [resource]
 id = &"potion_health"
 item_name = "Health Potion"
 base_weight = 0.5
+icon = ExtResource("1_1mnks")

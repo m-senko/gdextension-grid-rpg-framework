@@ -1,0 +1,128 @@
+[gd_scene format=3 uid="uid://cphrh7eu517gl"]
+
+[ext_resource type="Script" uid="uid://bl7qa457rklm" path="res://scripts/player_hud.gd" id="1_tvw2b"]
+[ext_resource type="Script" uid="uid://dob105k283r1v" path="res://scripts/health_bar.gd" id="2_cs3pk"]
+[ext_resource type="Script" uid="uid://bhkmycfm2t1ss" path="res://prefabs/hud/inventory_ui.gd" id="3_a54vf"]
+[ext_resource type="PackedScene" uid="uid://kb0j3lqbqfr3" path="res://prefabs/hud/item_row.tscn" id="3_n6wd1"]
+
+[node name="PlayerHud" type="CanvasLayer" unique_id=610704048]
+script = ExtResource("1_tvw2b")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=777905745]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="HealthBar" type="ProgressBar" parent="MarginContainer" unique_id=1308391384]
+self_modulate = Color(1, 0, 0, 1)
+custom_minimum_size = Vector2(200, 30)
+layout_direction = 2
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 8
+value = 50.0
+show_percentage = false
+script = ExtResource("2_cs3pk")
+metadata/_edit_group_ = true
+metadata/_edit_use_anchors_ = true
+
+[node name="Label" type="Label" parent="MarginContainer/HealthBar" unique_id=2043329475]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 0
+size_flags_vertical = 1
+text = "100/100"
+horizontal_alignment = 1
+vertical_alignment = 1
+clip_text = true
+text_overrun_behavior = 2
+
+[node name="InventoryMC" type="MarginContainer" parent="MarginContainer" unique_id=281341226 node_paths=PackedStringArray("list_container", "weight_label")]
+custom_minimum_size = Vector2(600, 400)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+script = ExtResource("3_a54vf")
+list_container = NodePath("VBoxContainer/ScrollContainer/VBoxContainer")
+weight_label = NodePath("VBoxContainer/HBoxContainer/Weight")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/InventoryMC" unique_id=1636248802]
+layout_mode = 2
+
+[node name="Header" type="HBoxContainer" parent="MarginContainer/InventoryMC/VBoxContainer" unique_id=1351783061]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Control" type="Control" parent="MarginContainer/InventoryMC/VBoxContainer/Header" unique_id=1566182735]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+
+[node name="ItemName" type="Label" parent="MarginContainer/InventoryMC/VBoxContainer/Header" unique_id=662160678]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 10.0
+text = "Name"
+vertical_alignment = 1
+
+[node name="ItemWeight" type="Label" parent="MarginContainer/InventoryMC/VBoxContainer/Header" unique_id=1157888002]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Weight"
+vertical_alignment = 1
+
+[node name="ItemCount" type="Label" parent="MarginContainer/InventoryMC/VBoxContainer/Header" unique_id=630176066]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Count"
+vertical_alignment = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/InventoryMC/VBoxContainer" unique_id=756048236]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/InventoryMC/VBoxContainer/ScrollContainer" unique_id=814539998]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ItemRow" parent="MarginContainer/InventoryMC/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=1351943153 instance=ExtResource("3_n6wd1")]
+layout_mode = 2
+
+[node name="ItemRow2" parent="MarginContainer/InventoryMC/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=1435403238 instance=ExtResource("3_n6wd1")]
+layout_mode = 2
+
+[node name="ItemRow3" parent="MarginContainer/InventoryMC/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=1267557746 instance=ExtResource("3_n6wd1")]
+layout_mode = 2
+
+[node name="ItemRow4" parent="MarginContainer/InventoryMC/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=1477859365 instance=ExtResource("3_n6wd1")]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/InventoryMC/VBoxContainer" unique_id=87175559]
+layout_mode = 2
+
+[node name="Header" type="Label" parent="MarginContainer/InventoryMC/VBoxContainer/HBoxContainer" unique_id=1638143492]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 10.0
+text = "Total weight:"
+horizontal_alignment = 2
+
+[node name="Weight" type="Label" parent="MarginContainer/InventoryMC/VBoxContainer/HBoxContainer" unique_id=2049984020]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+horizontal_alignment = 1
+vertical_alignment = 1
